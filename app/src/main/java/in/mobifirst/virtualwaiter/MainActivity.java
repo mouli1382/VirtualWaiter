@@ -1,8 +1,10 @@
  package in.mobifirst.virtualwaiter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -54,8 +57,8 @@ import static in.mobifirst.virtualwaiter.HelpType.TEA;
 //set content view AFTER ABOVE sequence (to avoid crash)
 
          this.findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE);
-         setTitle("Chutki");
-         //getSupportActionBar().hide();
+//         setTitle("Chutki");
+         getSupportActionBar().hide();
 
          setContentView(R.layout.activity_main);
          String mtr=null;
@@ -64,7 +67,7 @@ import static in.mobifirst.virtualwaiter.HelpType.TEA;
          str = PreferenceManager.getDefaultSharedPreferences(this).getString("example_list",str);
 
          GridView gridview = (GridView) findViewById(R.id.gridview);
-         gridview.setAdapter(new ImageAdapter(this));
+         gridview.setAdapter(new ImageAdapter(this, getScreenWidth(this), getScreenHeight(this)));
 
 
          mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(mtr);
@@ -207,5 +210,23 @@ import static in.mobifirst.virtualwaiter.HelpType.TEA;
 
          Intent intent = new Intent (this, SettingsActivity.class);
          startActivity(intent);
+     }
+
+     public static int getScreenWidth(Context context) {
+         WindowManager windowManager = (WindowManager) context
+                 .getSystemService(Context.WINDOW_SERVICE);
+         Display display = windowManager.getDefaultDisplay();
+         Point size = new Point();
+         display.getSize(size);
+         return size.x;
+     }
+
+     public static int getScreenHeight(Context context) {
+         WindowManager windowManager = (WindowManager) context
+                 .getSystemService(Context.WINDOW_SERVICE);
+         Display display = windowManager.getDefaultDisplay();
+         Point size = new Point();
+         display.getSize(size);
+         return size.y;
      }
  }

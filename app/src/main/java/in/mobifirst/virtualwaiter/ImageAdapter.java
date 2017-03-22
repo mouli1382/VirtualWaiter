@@ -16,9 +16,13 @@ import android.widget.ListAdapter;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+    private int screenWidth;
+    private int screenHeight;
 
-    public ImageAdapter(Context c) {
+    public ImageAdapter(Context c, int width, int height) {
         mContext = c;
+        screenWidth = width;
+        screenHeight = height;
     }
 
     public int getCount() {
@@ -38,16 +42,22 @@ public class ImageAdapter extends BaseAdapter {
         final ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
+
+            int actualWidth = screenWidth - (2 * mContext.getResources().getDimensionPixelSize(R.dimen.grid_vertical_spacing) +
+                    2 * mContext.getResources().getDimensionPixelSize(R.dimen.activity_layout_margin));
+
+            int actualHeight = screenHeight - (3 * mContext.getResources().getDimensionPixelSize(R.dimen.grid_horizontal_spacing) +
+                    3 * mContext.getResources().getDimensionPixelSize(R.dimen.activity_layout_margin));
+
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(400, 400));
+            imageView.setLayoutParams(new GridView.LayoutParams(actualWidth / 2, actualHeight / 4));
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setPadding(100, 100, 100, 100);
+            imageView.setPadding(8, 8, 8, 8);
             imageView.setBackgroundResource(R.drawable.background);
 
         } else {
             imageView = (ImageView) convertView;
         }
-
 
 
         imageView.setImageResource(mThumbIds[position]);
