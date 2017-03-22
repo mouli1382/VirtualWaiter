@@ -1,6 +1,9 @@
 package in.mobifirst.virtualwaiter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Point;
+import android.view.Display;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -101,8 +104,8 @@ public class WaiterView extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         gridview = (GridView) findViewById(R.id.imagegridview);
-        gridview.setAdapter(new GridImageAdapter(this));
-
+        //gridview.setAdapter(new GridImageAdapter(this), MainActivity.getScreenWidth(getApplicationContext()), MainActivity.getScreenHeight(getApplicationContext()));
+        gridview.setAdapter(new GridImageAdapter(this, getScreenWidth(this), getScreenHeight(this)));
         String mtr=null;
         mtr = PreferenceManager.getDefaultSharedPreferences(this).getString("meeting_room_id",mtr);
         if (mtr == null)
@@ -324,6 +327,23 @@ public class WaiterView extends AppCompatActivity {
         // created, to briefly hint to the user that UI controls
         // are available.
 
+    }
+    public static int getScreenWidth(Context context) {
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+
+    public static int getScreenHeight(Context context) {
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.y;
     }
 
 

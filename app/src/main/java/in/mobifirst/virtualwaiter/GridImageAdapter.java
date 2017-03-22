@@ -21,10 +21,18 @@ import com.google.firebase.database.ValueEventListener;
 
 public class GridImageAdapter extends BaseAdapter {
         private Context mContext;
+        private int screenWidth;
+        private int screenHeight;
 
         public GridImageAdapter(Context c) {
             mContext = c;
         }
+
+        public GridImageAdapter(Context c, int width, int height) {
+        mContext = c;
+        screenWidth = width;
+        screenHeight = height;
+         }
 
         public int getCount() {
             return mThumbIds.length;
@@ -43,16 +51,25 @@ public class GridImageAdapter extends BaseAdapter {
             ImageView imageView;
              {
                 // if it's not recycled, initialize some attributes
-                 //if (convertView == null) {
+                 if (convertView == null) {
+
+                     int actualWidth = screenWidth - (2 * mContext.getResources().getDimensionPixelSize(R.dimen.grid_vertical_spacing) +
+                             2 * mContext.getResources().getDimensionPixelSize(R.dimen.activity_layout_margin));
+
+                     int actualHeight = screenHeight - (3 * mContext.getResources().getDimensionPixelSize(R.dimen.grid_horizontal_spacing) +
+                             3 * mContext.getResources().getDimensionPixelSize(R.dimen.activity_layout_margin));
+
                      imageView = new ImageView(mContext);
-                     imageView.setLayoutParams(new GridView.LayoutParams(45, 45));
-                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                     imageView.setLayoutParams(new GridView.LayoutParams(actualWidth / 15, actualHeight / 26));
+                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
                      imageView.setPadding(1, 1, 1, 1);
-                // }
-                // else
-                 //{
-                   //  imageView = (ImageView) convertView;
-               //  }
+
+                 }
+                else
+                 {
+                     imageView = (ImageView) convertView;
+                 }
                 /* Integer pos = position/7;
 
                  String mtr=null;
