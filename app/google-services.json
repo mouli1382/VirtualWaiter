@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "657240151152",
+    "firebase_url": "https://virtualwaiter-fe047.firebaseio.com",
+    "project_id": "virtualwaiter-fe047",
+    "storage_bucket": "virtualwaiter-fe047.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657240151152:android:4b4f400cb0d6f063",
+        "android_client_info": {
+          "package_name": "in.mobifirst.virtualwaiter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657240151152-395i0a90c4hnr8nbpqi9mmsjv1h8d3dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmWrv-M6129kBw9ev4RTKCE_BGz35moOo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
