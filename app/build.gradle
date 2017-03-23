@@ -1,5 +1,26 @@
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 11 // bump for dogfood builds, public betas, etc.
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def gitBranchName = 'git rev-parse --abbrev-ref HEAD'.execute([], project.rootDir).text.trim()
+def apkSuffix = versionMajor + '.' + versionMinor + '.' + versionPatch;
+def projectName = "VitualWaiter"
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
+}
 
 android {
     compileSdkVersion 24
@@ -19,24 +40,84 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile "com.google.firebase:firebase-database:$rootProject.firebaseVersion"
-    compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
-    compile "com.google.firebase:firebase-auth:$rootProject.firebaseVersion"
-    compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
-    compile "com.google.firebase:firebase-storage:$rootProject.firebaseVersion"
-    compile "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile 'com.google.firebase:firebase-auth:9.4.0'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-vector-drawable:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    testCompile 'junit:junit:4.12'
+
+
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+            exclude group: 'com.android.support', module: 'support-annotations'
+        })
+        compile "com.google.firebase:firebase-database:$rootProject.firebaseVersion"
+        compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
+        compile "com.google.firebase:firebase-auth:$rootProject.firebaseVersion"
+        compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
+        compile "com.google.firebase:firebase-storage:$rootProject.firebaseVersion"
+        compile "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
+        compile 'com.android.support:appcompat-v7:24.2.1'
+        compile 'com.android.support.constraint:constraint-layout:1.0.1'
+        compile 'com.google.firebase:firebase-auth:9.4.0'
+        compile 'com.android.support:design:24.2.1'
+        compile 'com.android.support:support-vector-drawable:24.2.1'
+        compile 'com.android.support:support-v4:24.2.1'
+        testCompile 'junit:junit:4.12'
+    }
+
+
+
+
+// Used to name our output apk
+    applicationVariants.all { variant ->
+        variant.mergedFlavor.versionName = "${versionMajor}.${versionMinor}.${versionPatch}-${variant.flavorName}-${variant.buildType.name}-${gitBranchName}";
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                output.outputFile = file("$project.buildDir/${projectName}-${variant.name}-${apkSuffix}-${gitSha}.apk")
+            }
+        }
+    }
+
+    productFlavors {
+
+
+        apply plugin: 'java'
+        apply plugin: 'maven'
+        apply plugin: 'signing'
+        apply plugin: 'application'
+        applicationId "in.mobifirst.virtualwaiter"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}-${gitBranchName}"
+
+    }
+
+
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+        debug {
+            keyAlias keystoreProperties['debugkeyAlias']
+            keyPassword keystoreProperties['debugkeyPassword']
+            storeFile file(keystoreProperties['debugstoreFile'])
+            storePassword keystoreProperties['debugstorePassword']
+        }
+        buildTypes {
+            release {
+
+                signingConfig signingConfigs.release
+
+            }
+            debug {
+                applicationIdSuffix ".dev"
+                signingConfig signingConfigs.debug
+
+            }
+        }
+    }
+
 }
