@@ -60,11 +60,10 @@ public class GridImageAdapter extends BaseAdapter {
                              3 * mContext.getResources().getDimensionPixelSize(R.dimen.activity_layout_margin));
 
                      imageView = new ImageView(mContext);
-                     imageView.setLayoutParams(new GridView.LayoutParams(actualWidth / 15, actualHeight / 26));
+                     imageView.setLayoutParams(new GridView.LayoutParams(actualWidth / 15, actualHeight / 20));
                      imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
                      imageView.setPadding(1, 1, 1, 1);
-
                  }
                 else
                  {

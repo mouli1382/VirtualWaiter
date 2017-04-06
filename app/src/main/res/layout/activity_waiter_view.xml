@@ -12,12 +12,12 @@
         android:layout_height="match_parent"
         android:columnWidth="100dp"
         android:numColumns="9"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
+        android:verticalSpacing="4dp"
+        android:horizontalSpacing="4dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
         android:background="@color/colorPurple"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp" />
 

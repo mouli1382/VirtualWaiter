@@ -1,6 +1,7 @@
 package in.mobifirst.virtualwaiter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Outline;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,19 @@ public class ImageAdapter extends BaseAdapter {
                     3 * mContext.getResources().getDimensionPixelSize(R.dimen.activity_layout_margin));
 
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(actualWidth / 2, actualHeight / 4));
+            imageView.setLayoutParams(new GridView.LayoutParams(actualWidth / 2 , (actualHeight - screenHeight/11 )/ 4));
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setPadding(4, 4, 4, 4);
+            /*if (position % 4 == 0)
+                imageView.setBackgroundColor(Color.parseColor("#ffff00"));
+            else if (position % 4  == 1)
+                imageView.setBackgroundColor(Color.parseColor("#E6E6FA"));
+            else if (position % 4  == 2)
+                imageView.setBackgroundColor(Color.parseColor("#ff7f50"));
+            else if (position % 4  == 3)
+                imageView.setBackgroundColor(Color.parseColor("#3399ff"));
+            else
+                imageView.setBackgroundColor(Color.parseColor("#00ccff"));*/
             imageView.setBackgroundResource(R.drawable.background);
 
         } else {

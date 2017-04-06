@@ -224,7 +224,7 @@ public class WaiterView extends AppCompatActivity {
                 r.play();
                 int row = -1;
                 //for (Iterator<DataSnapshot> iter = dataSnapshot.getChildren().iterator(); iter.hasNext(); ) {
-                 for (row=0; (row< 2) && (itr.hasNext());row++) {
+                 for (row=0; (row< dataSnapshot.getChildrenCount()) && (itr.hasNext());row++) {
                     //Chair obj = iter.next().getValue(Chair.class);
                      if (itr.hasNext() == false)
                          break;
